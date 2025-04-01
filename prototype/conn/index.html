@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Guardians</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #e0f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .navbar .title {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .navbar .location {
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .navbar .location img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        /* Dash style */
+        .navbar .location .dash {
+            font-size: 1.5em;
+            margin-left: 10px;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* Hamburger menu icon */
+        /* .navbar .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 25px;
+            height: 20px;
+            cursor: pointer;
+        } */
+
+        .navbar .hamburger div {
+            background-color: white;
+            height: 3px;
+            width: 100%;
+            border-radius: 3px;
+        }
+
+        /* Dropdown Menu Styles */
+        .navbar .dropdown {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            background-color: #fff;
+            color: #333;
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            padding: 10px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .navbar .dropdown a {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+            text-align: left;
+            display: block;
+        }
+
+        .navbar .dropdown a:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Weather and Energy Sections */
+        .weather-section {
+            background-color: #e0f7fa;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            /* Hide overflow to keep the weather scroller within the container */
+            background-image: url('images/weather-background.jpg');
+            /* Add your background image */
+            background-size: 200% auto;
+            /* Ensure the background fits as per the scrolling content */
+            background-attachment: fixed;
+            /* Keep the background fixed while scrolling */
+        }
+
+        .weather-section h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            color: #00796b;
+        }
+
+        .weather-scroller {
+            display: flex;
+            white-space: nowrap;
+            padding: 10px;
+            /*background-color: rgb(0, 0, 0);*/
+            width: 100%;
+            color: WHITE;
+            border-radius: 10px;
+            transition: transform 1s ease-in-out;
+        }
+
+        .weather-item {
+            display: inline-block;
+            width: 120px;
+            margin: 0 10px;
+            text-align: center;
+            background-color: #555;
+            padding: 15px 10px;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .weather-item img {
+            width: 50px;
+            height: 50px;
+            margin: 10px 0;
+        }
+
+        .energy-section {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .energy-card {
+            position: relative;
+            width: 48%;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .energy-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .reading-box {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 254, 254, 0.9);
+            color: #333;
+            padding: 10px 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            width: 30%;
+            background: #d5f5d0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2d862d;
+            border-radius: 15px 15px 0 0;
+            margin: 20px auto 0;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <span class="title">Grid Guardians</span>
+
+        <!-- Hamburger Menu -->
+        <div class="hamburger" onclick="toggleDropdown()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <span class="location" onclick="toggleDropdown()">
+            <img src="images/location.png" alt="Location Icon"> Current Location: Sharda University, Greater Noida
+        </span>
+
+        <!-- Dropdown Menu -->
+        <div class="dropdown" id="dropdown-menu">
+            <a href="#">Home</a>
+            <a href="#">About Us</a>
+            <a href="#">Energy Solutions</a>
+            <a href="#">Contact</a>
+        </div>
+    </div>
+
+    <!-- Weather Prediction Section -->
+    <div class="weather-section">
+        <h3>30-Day Energy Readings</h3>
+        <div class="weather-scroller" id="weather-scroller">
+            <!-- Weather items will be dynamically generated -->
+        </div>
+    </div>
+
+    <!-- Energy Section -->
+    <!-- Energy Section -->
+    <div class="energy-section">
+        <!-- Generation Card -->
+        <div class="energy-card">
+            <img src="images/gen.jpeg.jpg" alt="Generation">
+            <div class="reading-box">
+                Generation: <input type="number" id="energy_generation" readonly>
+            </div>
+        </div>
+
+        <!-- Consumption Card -->
+        <div class="energy-card">
+            <img src="images/cons.jpeg.jpg" alt="Consumption">
+            <div class="reading-box">
+                Consumption: <input type="number" id="home_energy" readonly>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <span id="surplus-energy">Total Surplus Energy:</span>
+    </div>
+    <script>
+        let currentIndex = 0;
+        let data = [];
+
+        // Fetch data from PHP
+        function fetchData() {
+            fetch('conection.php') // Ensure this points to your PHP file
+                .then(response => response.json())
+                .then(jsonData => {
+                    data = jsonData;
+                    updateFields();
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Update fields with the fetched data
+        function updateFields() {
+            if (data.length > 0) {
+                const row = data[currentIndex];
+                const consumption = parseFloat(row['Meter Reading (kWh)']) || 0;
+                const generation = parseFloat(row['Cumulative Reading (kWh)']) || 0;
+
+                document.getElementById('home_energy').value = consumption;
+                document.getElementById('energy_generation').value = generation;
+
+                // Calculate and display surplus energy
+                const surplus = (generation - consumption).toFixed(6);
+                const surplusText = surplus >= 0
+                    ? `Total Surplus Energy: ${surplus} kW`
+                    : `Total Deficit Energy: ${Math.abs(surplus)} kW`;
+
+                document.getElementById('surplus-energy').textContent = surplusText;
+
+                // Cycle to the next record
+                currentIndex = (currentIndex + 1) % data.length;
+            } else {
+                document.getElementById('home_energy').value = 'No Data';
+                document.getElementById('energy_generation').value = 'No Data';
+                document.getElementById('surplus-energy').textContent = 'No Data Available';
+            }
+        }
+
+        // Initialize fetching and updating
+        fetchData();
+        setInterval(updateFields, 1000); // Update every second
+    </script>
+
+    <script>
+        // Function to update surplus energy based on user input
+        function updateSurplus() {
+            const generation = parseFloat(document.getElementById('generation-input').value) || 0;
+            const consumption = parseFloat(document.getElementById('consumption-input').value) || 0;
+            const surplus = (generation - consumption).toFixed(2);
+
+            const surplusText = surplus >= 0
+                ? `Total Surplus Energy: ${surplus} kW`
+                : `Total Deficit Energy: ${Math.abs(surplus)} kW`;
+
+            document.getElementById('surplus-energy').textContent = surplusText;
+        }
+        // Function to generate a random reading between 240 and 260
+         function generateRandomReading() {
+          return (150 + Math.random() * 3).toFixed(5);
+        }
+
+
+        // Weather icons for different conditions
+        const weatherIcons = {
+            sunny: 'images/sunny.png',
+            cloudy: 'images/sunny.png',
+            rainy: 'images/sunny.png',
+            stormy: 'images/sunny.png',
+            snowy: 'images/sunny-day.png'
+        };
+
+        // Assign each box a random weather condition
+        function getRandomWeatherCondition() {
+            const weatherConditions = Object.keys(weatherIcons);
+            const randomCondition = weatherConditions[Math.floor(Math.random() * weatherConditions.length)];
+            return weatherIcons[randomCondition];
+        }
+
+        const scroller = document.getElementById('weather-scroller');
+
+        // Generate dates starting from 26-Jan
+        const startDate = new Date(2025, 0, 26);
+
+        for (let i = 0; i < 30; i++) {
+            const date = new Date(startDate);
+            date.setDate(startDate.getDate() + i);
+
+            const randomReading = generateRandomReading();
+            const weatherItem = document.createElement('div');
+            weatherItem.className = 'weather-item';
+
+            weatherItem.innerHTML = `
+                <div class="weather-date">${date.toLocaleDateString('en-US', { day: '2-digit', month: 'short' })}</div>
+                <img src="${getRandomWeatherCondition()}" alt="Energy Reading">
+                <div class="weather-reading-box">${randomReading} kW</div>
+            `;
+            scroller.appendChild(weatherItem);
+        }
+
+        // Auto-scrolling functionality
+        let scrollPosition = 0;
+        const scrollAmount = 30; // Amount to scroll in pixels per second
+
+        setInterval(() => {
+            if (scrollPosition < scroller.scrollWidth - scroller.clientWidth) {
+                scrollPosition += scrollAmount;
+            } else {
+                scrollPosition = 0; // Reset to the start
+            }
+            scroller.style.transform = `translateX(-${scrollPosition}px)`;
+        }, 1000); // Scroll every second
+
+        // Toggle dropdown visibility
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdown-menu');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+
+</html>
